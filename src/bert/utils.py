@@ -13,6 +13,16 @@ from allennlp.modules import scalar_mix
 import pytorch_pretrained_bert
 
 
+class PretrainedBertForQuestionAnswering(pytorch_pretrained_bert.BertForQuestionAnswering):
+
+    def __init__(self, config):
+        super(PretrainedBertForQuestionAnswering, self).__init__(config)
+
+    def forward(self, input_ids, token_type_ids=None, attention_mask=None, start_positions=None, end_positions=None):
+        return self.bert(input_ids, token_type_ids, attention_mask,
+                         output_all_encoded_layers=True)
+
+
 def _get_seg_ids(ids, sep_id):
     """ Dynamically build the segment IDs for a concatenated pair of sentences
     Searches for index SEP_ID in the tensor
@@ -42,10 +52,11 @@ class BertEmbedderModule(nn.Module):
     def __init__(self, args, cache_dir=None):
         super(BertEmbedderModule, self).__init__()
 
-        self.model = \
-            pytorch_pretrained_bert.BertModel.from_pretrained(
-                args.bert_model_name,
-                cache_dir=cache_dir)
+        self.model = PretrainedBertForQuestionAnswering.from_pretrained(args.bert_model_name,
+                                                              cache_dir=cache_dir)
+
+        self.model.load_state_dict(torch.load(args.bert_model_file))
+
         self.embeddings_mode = args.bert_embeddings_mode
 
         tokenizer = \
@@ -128,8 +139,7 @@ class BertEmbedderModule(nn.Module):
             # <float32> [batch_size, seq_len, output_dim]
             token_types = _get_seg_ids(ids, self._sep_id) if is_pair_task else torch.zeros_like(ids)
             encoded_layers, _ = self.model(ids, token_type_ids=token_types,
-                                           attention_mask=mask,
-                                           output_all_encoded_layers=True)
+                                           attention_mask=mask)
             h_enc = encoded_layers[-1]
 
         if self.embeddings_mode in ["none", "top"]:
