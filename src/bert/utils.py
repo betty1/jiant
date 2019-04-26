@@ -58,6 +58,7 @@ class BertEmbedderModule(nn.Module):
         self.model.load_state_dict(torch.load(args.bert_model_file))
 
         self.embeddings_mode = args.bert_embeddings_mode
+        self.embedding_layer = args.bert_embedding_layer
 
         tokenizer = \
             pytorch_pretrained_bert.BertTokenizer.from_pretrained(
@@ -138,11 +139,13 @@ class BertEmbedderModule(nn.Module):
             # encoded_layers is a list of layer activations, each of which is
             # <float32> [batch_size, seq_len, output_dim]
             token_types = _get_seg_ids(ids, self._sep_id) if is_pair_task else torch.zeros_like(ids)
-            encoded_layers, _ = self.model(ids, token_type_ids=token_types,
-                                           attention_mask=mask)
+            encoded_layers, _ = self.model(ids, token_type_ids=token_types, attention_mask=mask)
+
             h_enc = encoded_layers[-1]
 
-        if self.embeddings_mode in ["none", "top"]:
+        if self.embeddings_mode == "single_layer":
+            h = encoded_layers[self.embedding_layer]
+        elif self.embeddings_mode in ["none", "top"]:
             h = h_enc
         elif self.embeddings_mode == "only":
             h = h_lex
