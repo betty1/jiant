@@ -240,6 +240,17 @@ class EdgeProbingTask(Task):
 # can group these in the code.
 ##
 
+##
+# Bert Layer Probing Tasks
+##
+# Entity type labeling on OntoNotes.
+register_task('layers-ner-ontonotes',
+              rel_path='edges/ontonotes/ner',
+              label_file="labels.txt", files_by_split={
+                  'train': "train.json",
+                  'val': "development.json",
+                  'test': "test.json",
+              }, single_sided=True)(EdgeProbingTask)
 
 ##
 # Core probing tasks. as featured in the paper.
