@@ -122,7 +122,7 @@ class BertEmbedderModule(nn.Module):
         assert (ids > 1).all()
         ids -= 2  # shift indices to match BERT wordpiece embeddings
 
-        if self.embeddings_mode not in ["none", "top"]:
+        if self.embeddings_mode not in ["none", "top", "single_layer"]:
             # This is redundant with the lookup inside BertModel,
             # but doing so this way avoids the need to modify the BertModel
             # code.

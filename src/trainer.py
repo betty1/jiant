@@ -792,6 +792,9 @@ class SamplingMultiTaskTrainer:
                                              self._dec_val_scale)
         else:
             # triggers for single-task cases and during MTL when task val metric increases
+
+            log.info("Num examples: %d", n_examples)
+
             all_val_metrics["micro_avg"] += all_val_metrics[task.val_metric] * n_examples
             all_val_metrics["macro_avg"] += all_val_metrics[task.val_metric]
         n_examples_overall += n_examples

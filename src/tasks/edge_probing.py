@@ -252,6 +252,14 @@ register_task('layers-ner-ontonotes',
                   'test': "test.json",
               }, single_sided=True)(EdgeProbingTask)
 
+# Coreference on OntoNotes corpus. Two labels.
+register_task('layers-coref-ontonotes', rel_path='edges/ontonotes/coref',
+              label_file="labels.txt", files_by_split={
+                  'train': "train.json",
+                  'val': "development.json",
+                  'test': "test.json",
+              }, is_symmetric=False)(EdgeProbingTask)
+
 ##
 # Core probing tasks. as featured in the paper.
 ##
