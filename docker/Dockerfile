@@ -71,5 +71,9 @@ RUN pip install --upgrade --no-cache-dir pip && \
     punkt && \
     rm -rf ~/.cache/pip
 
-ADD ./ /app/
+RUN git clone https://github.com/NVIDIA/apex && \
+    cd apex && \
+    pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" .
+
+ADD ./ /start/
 
