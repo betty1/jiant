@@ -5,8 +5,7 @@ function run_ner_task() {
     python -u /app/main.py --config_file /app/config/edgeprobe_bert_babi.conf -o \
     "target_tasks=layers-ner-ontonotes, \
     exp_name=bert_unfinetuned_ner_layer_$1, \
-    bert_embedding_layer=$1, \
-    bert_model_file=/data_dir/bert_models/babi/qa2_base/pytorch_model.bin"
+    bert_embedding_layer=$1"
 }
 
 # function run_coref_task() {
