@@ -56,8 +56,7 @@ class BertEmbedderModule(nn.Module):
 
             log.info("Loading fine-tuned BERT model from file.")
 
-            self.model = PretrainedBertForQuestionAnswering.from_pretrained(args.bert_model_name,
-                                                                  cache_dir=cache_dir)
+            self.model = PretrainedBertForQuestionAnswering.from_pretrained(args.bert_model_name)
 
             self.model.load_state_dict(torch.load(args.bert_model_file))
 
