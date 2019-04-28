@@ -52,10 +52,22 @@ class BertEmbedderModule(nn.Module):
     def __init__(self, args, cache_dir=None):
         super(BertEmbedderModule, self).__init__()
 
-        self.model = PretrainedBertForQuestionAnswering.from_pretrained(args.bert_model_name,
-                                                              cache_dir=cache_dir)
+        if args.bert_model_file:
 
-        self.model.load_state_dict(torch.load(args.bert_model_file))
+            log.info("Loading fine-tuned BERT model from file.")
+
+            self.model = PretrainedBertForQuestionAnswering.from_pretrained(args.bert_model_name,
+                                                                  cache_dir=cache_dir)
+
+            self.model.load_state_dict(torch.load(args.bert_model_file))
+
+        else:
+
+            log.info("Loading pretrained BERT model without fine-tuning.")
+
+            self.model = pytorch_pretrained_bert.BertModel.from_pretrained(
+                    args.bert_model_name,
+                    cache_dir=cache_dir)
 
         self.embeddings_mode = args.bert_embeddings_mode
         self.embedding_layer = args.bert_embedding_layer
