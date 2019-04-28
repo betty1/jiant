@@ -52,7 +52,7 @@ class BertEmbedderModule(nn.Module):
     def __init__(self, args, cache_dir=None):
         super(BertEmbedderModule, self).__init__()
 
-        if args.bert_model_file:
+        if "bert_model_file" in args:
 
             log.info("Loading fine-tuned BERT model from file.")
 
