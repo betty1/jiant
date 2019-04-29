@@ -151,16 +151,12 @@ class BertEmbedderModule(nn.Module):
             # <float32> [batch_size, seq_len, output_dim]
             token_types = _get_seg_ids(ids, self._sep_id) if is_pair_task else torch.zeros_like(ids)
 
-            log.info(f"input ids: {ids}")
-
             encoded_layers, _ = self.model(ids, token_type_ids=token_types, attention_mask=mask)
 
             h_enc = encoded_layers[-1]
 
         if self.embeddings_mode == "single_layer":
             h = encoded_layers[self.embedding_layer]
-
-            log.info(f"hidden state: {h}")
 
         elif self.embeddings_mode in ["none", "top"]:
             h = h_enc
