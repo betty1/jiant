@@ -27,6 +27,7 @@ function run_rel_semeval_task() {
     bert_model_name=bert-large-uncased, \
 	exp_name=bert_hotpot_rel_layer_$1, \
     bert_embedding_layer=$1, \
+    max_epochs=5, \
     bert_model_file=/data_dir/bert_models/hotpot_small_distract/pytorch_model.bin"
 }
 
