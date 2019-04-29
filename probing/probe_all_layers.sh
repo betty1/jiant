@@ -25,9 +25,9 @@ function run_rel_semeval_task() {
     python -u /app/main.py --config_file /app/config/edgeprobe_bert_finetuned.conf -o \
     "target_tasks=edges-rel-semeval, \
     bert_model_name=bert-large-uncased, \
-	exp_name=bert_hotpot_rel_layer_$1, \
+	exp_name=bert_hotpot_rel_layer_$1_10epochs, \
     bert_embedding_layer=$1, \
-    max_epochs=5, \
+    max_epochs=10, \
     bert_model_file=/data_dir/bert_models/hotpot_small_distract/pytorch_model.bin"
 }
 
