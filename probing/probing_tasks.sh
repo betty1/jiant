@@ -18,7 +18,7 @@ function run_coref_task() {
     bert_embedding_layer=$1, \
     bert_model_name=$2, \
     bert_model_file=$3, \
-    exp_name=bert_coref_layer_$1_$4, \
+    exp_name=bert_$4_coref_layer_$1, \
     max_epochs=10"
 }
 
@@ -29,27 +29,27 @@ function run_rel_semeval_task() {
     bert_embedding_layer=$1, \
     bert_model_name=$2, \
     bert_model_file=$3, \
-    exp_name=bert_rel_layer_$1_$4, \
+    exp_name=bert_$4_rel_layer_$1, \
     max_epochs=10"
 }
 
 function ner_hotpot_layers() {
     BERT_TYPE="bert-large-uncased"
     MODEL_FILE="/data_dir/bert_models/hotpot_small_distract/pytorch_model.bin"
-    EXP_SUFFIX="hotpot"
+    EXP_NAME="hotpot"
     for i in 0 2 4 6 8 10 12 14 16 18 20 22 23
     do
-       run_ner_task $i $BERT_TYPE $MODEL_FILE $EXP_SUFFIX
+       run_ner_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME
     done
 }
 
 function coref_hotpot_layers() {
     BERT_TYPE="bert-large-uncased"
     MODEL_FILE="/data_dir/bert_models/hotpot_small_distract/pytorch_model.bin"
-    EXP_SUFFIX="hotpot"
+    EXP_NAME="hotpot"
     for i in {0..23}
     do
-       run_coref_task $i $BERT_TYPE $MODEL_FILE $EXP_SUFFIX
+       run_coref_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME
     done
 }
 
