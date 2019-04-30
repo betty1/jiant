@@ -11,7 +11,7 @@ spec:
       restartPolicy: "Never"
       containers:
         - name: jiant-probing
-          image: registry.datexis.com/bvanaken/jiant-probing:v1.1
+          image: registry.datexis.com/bvanaken/jiant-probing:v1.2
           imagePullPolicy: "Always"
           ports:
             - name: client-port
@@ -36,7 +36,8 @@ spec:
             value: ""
           - name: FASTTEXT_MODEL_FILE
             value: ""
-          command: ["./start/start_probing.sh", "coref_hotpot_layers"]
+          command: ["./start/start_probing.sh"]
+          args: ["coref_hotpot_layers"]
       nodeSelector:
         gpu: k80
       imagePullSecrets:

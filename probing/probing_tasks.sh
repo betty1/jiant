@@ -60,5 +60,5 @@ fi
 
 if [ $1 == 'coref_hotpot_layers' ]
 then
-ner_coref_layers
+coref_hotpot_layers
 fi
