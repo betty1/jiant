@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: jiant-probing
+spec:
+  template:
+    metadata:
+      labels:
+        app: jiant-probing
+    spec:
+      restartPolicy: "Never"
+      containers:
+        - name: jiant-probing
+          image: registry.datexis.com/bvanaken/jiant-probing:v1.1
+          imagePullPolicy: "Always"
+          ports:
+            - name: client-port
+              containerPort: 6006
+          resources:
+            limits:
+              nvidia.com/gpu: 1 # requesting 1 GPU
+              memory: 8Gi
+          volumeMounts:
+            - name: filetransfer-claim
+              mountPath: /data_dir
+          env:
+          - name: PYTHONUNBUFFERED
+            value: "0"
+          - name: JIANT_PROJECT_PREFIX
+            value: "/data_dir/exp/"
+          - name: JIANT_DATA_DIR
+            value: "/data_dir/probing_data/"
+          - name: GLOVE_EMBS_FILE
+            value: "/data_dir/glove.840B.300d.txt"
+          - name: WORD_EMBS_FILE
+            value: ""
+          - name: FASTTEXT_MODEL_FILE
+            value: ""
+          command: ["./start/start_probing.sh", "coref_hotpot_layers"]
+      nodeSelector:
+        gpu: k80
+      imagePullSecrets:
+        - name:  private-registry-auth
+      volumes:
+        - name: filetransfer-claim
+          persistentVolumeClaim:
+            claimName: filetransfer-claim
