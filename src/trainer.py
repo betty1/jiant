@@ -271,6 +271,9 @@ class SamplingMultiTaskTrainer:
 
             # Adding task-specific smart iterator to speed up training
             instance = [i for i in itertools.islice(task.train_data, 1)][0]
+
+            log.info(f"instance of train item: {instance}")
+
             pad_dict = instance.get_padding_lengths()
             sorting_keys = []
             for field in pad_dict:
