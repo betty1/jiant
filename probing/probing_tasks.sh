@@ -102,7 +102,7 @@ function ner_nofinetune_layers() {
         "target_tasks=layers-ner-ontonotes, \
         bert_embedding_layer=$i, \
         bert_model_name=$BERT_TYPE, \
-        exp_name=bert_nofinetune_ner_layer_$1, \
+        exp_name=bert_nofinetune_ner_layer_$i, \
         max_epochs=10"
     done
 }
@@ -116,7 +116,7 @@ function coref_nofinetune_layers() {
         "target_tasks=layers-coref-ontonotes, \
         bert_embedding_layer=$i, \
         bert_model_name=$BERT_TYPE, \
-        exp_name=bert_nofinetune_coref_layer_$1, \
+        exp_name=bert_nofinetune_coref_layer_$i, \
         max_epochs=10"
     done
 }
@@ -130,7 +130,7 @@ function rel_nofinetune_layers() {
         "target_tasks=edges-rel-semeval, \
         bert_embedding_layer=$i, \
         bert_model_name=$BERT_TYPE, \
-        exp_name=bert_nofinetune_rel_layer_$1, \
+        exp_name=bert_nofinetune_rel_layer_$i, \
         max_epochs=10"
     done
 }
