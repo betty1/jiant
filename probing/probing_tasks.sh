@@ -33,6 +33,36 @@ function run_rel_semeval_task() {
     max_epochs=10"
 }
 
+function coref_babi_layers() {
+    BERT_TYPE="bert-base-uncased"
+    MODEL_FILE="/data_dir/bert_models/babi/qa21_base_cl/pytorch_model.bin"
+    EXP_NAME="babi"
+    for i in {0..11}
+    do
+       run_coref_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME
+    done
+}
+
+function ner_babi_layers() {
+    BERT_TYPE="bert-base-uncased"
+    MODEL_FILE="/data_dir/bert_models/babi/qa21_base_cl/pytorch_model.bin"
+    EXP_NAME="babi"
+    for i in {0..11}
+    do
+       run_ner_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME
+    done
+}
+
+function rel_babi_layers() {
+    BERT_TYPE="bert-base-uncased"
+    MODEL_FILE="/data_dir/bert_models/babi/qa21_base_cl/pytorch_model.bin"
+    EXP_NAME="babi"
+    for i in {0..11}
+    do
+       run_rel_semeval_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME
+    done
+}
+
 function rel_hotpot_layers() {
     BERT_TYPE="bert-large-uncased"
     MODEL_FILE="/data_dir/bert_models/hotpot_small_distract/pytorch_model.bin"
