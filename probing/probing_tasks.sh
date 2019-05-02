@@ -35,7 +35,7 @@ function run_rel_semeval_task() {
 
 function ner_babi_layers() {
     BERT_TYPE="bert-base-uncased"
-    MODEL_FILE="/data_dir/bert_models/babi/qa21_base_cl/pytorch_model.bin"
+    MODEL_FILE="/data_dir/bert_models/babi/qa21_base/pytorch_model.bin"
     EXP_NAME="babi"
     for i in {0..11}
     do
@@ -45,7 +45,7 @@ function ner_babi_layers() {
 
 function coref_babi_layers() {
     BERT_TYPE="bert-base-uncased"
-    MODEL_FILE="/data_dir/bert_models/babi/qa21_base_cl/pytorch_model.bin"
+    MODEL_FILE="/data_dir/bert_models/babi/qa21_base/pytorch_model.bin"
     EXP_NAME="babi"
     for i in {0..11}
     do
@@ -55,7 +55,7 @@ function coref_babi_layers() {
 
 function rel_babi_layers() {
     BERT_TYPE="bert-base-uncased"
-    MODEL_FILE="/data_dir/bert_models/babi/qa21_base_cl/pytorch_model.bin"
+    MODEL_FILE="/data_dir/bert_models/babi/qa21_base/pytorch_model.bin"
     EXP_NAME="babi"
     for i in {0..11}
     do
@@ -101,7 +101,7 @@ function ner_nofinetune_layers() {
         python -u /app/main.py --config_file /app/config/edgeprobe_bert_finetuned.conf -o \
         "target_tasks=layers-ner-ontonotes, \
         bert_embedding_layer=$i, \
-        bert_model_file=$BERT_TYPE, \
+        bert_model_name=$BERT_TYPE, \
         exp_name=bert_nofinetune_ner_layer_$1, \
         max_epochs=10"
     done
@@ -115,7 +115,7 @@ function coref_nofinetune_layers() {
         python -u /app/main.py --config_file /app/config/edgeprobe_bert_finetuned.conf -o \
         "target_tasks=layers-coref-ontonotes, \
         bert_embedding_layer=$i, \
-        bert_model_file=$BERT_TYPE, \
+        bert_model_name=$BERT_TYPE, \
         exp_name=bert_nofinetune_coref_layer_$1, \
         max_epochs=10"
     done
@@ -129,7 +129,7 @@ function rel_nofinetune_layers() {
         python -u /app/main.py --config_file /app/config/edgeprobe_bert_finetuned.conf -o \
         "target_tasks=edges-rel-semeval, \
         bert_embedding_layer=$i, \
-        bert_model_file=$BERT_TYPE, \
+        bert_model_name=$BERT_TYPE, \
         exp_name=bert_nofinetune_rel_layer_$1, \
         max_epochs=10"
     done
