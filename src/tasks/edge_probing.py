@@ -268,8 +268,16 @@ register_task('layers-qtype-trec', rel_path='edges/qtype',
                   'test': "test.json",
               }, single_sided=True)(EdgeProbingTask)
 
-# Question Types on TREC corpus. Fifty labels.
+# Question-Supporting Fact-Match on babi qa2
 register_task('layers-sup-babi2', rel_path='edges/sup_babi2',
+              label_file="labels.txt", files_by_split={
+                  'train': "train.json",
+                  'val': "development.json",
+                  'test': "test.json",
+              }, is_symmetric=False)(EdgeProbingTask)
+
+# Question-Supporting Fact-Match on all babi tasks
+register_task('layers-sup-babi-all', rel_path='edges/sup_babi_all',
               label_file="labels.txt", files_by_split={
                   'train': "train.json",
                   'val': "development.json",
