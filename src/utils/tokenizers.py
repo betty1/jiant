@@ -6,7 +6,7 @@ main Tokenizer class.
 import os
 import functools
 import logging as log
-from nltk.tokenize.moses import MosesTokenizer as NLTKMosesTokenizer, MosesDetokenizer
+from sacremoses import MosesTokenizer as NLTKMosesTokenizer, MosesDetokenizer
 from nltk.tokenize.simple import SpaceTokenizer
 
 

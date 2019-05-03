@@ -17,7 +17,7 @@ from torch.nn import Dropout, Linear
 from torch.nn import Parameter
 from torch.nn import init
 
-from nltk.tokenize.moses import MosesDetokenizer
+from sacremoses import MosesDetokenizer
 
 from allennlp.nn.util import masked_softmax, device_mapping
 from allennlp.common.checks import ConfigurationError
