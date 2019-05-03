@@ -110,16 +110,16 @@ function qtype_nofinetune_large() {
     done
 }
 
-function sup_babi2_nofinetune_base() {
+function sup_babi_all_nofinetune_base() {
     BERT_TYPE="bert-base-uncased"
 
     for i in {0..11}
     do
         python -u /app/main.py --config_file /app/config/edgeprobe_bert_finetuned.conf -o \
-        "target_tasks=layers-sup-babi2, \
+        "target_tasks=layers-sup-babi-all, \
         bert_embedding_layer=$i, \
         bert_model_name=$BERT_TYPE, \
-        exp_name=bert_nofinetune_sup_babi2_layer_$i, \
+        exp_name=bert_nofinetune_sup_babi_all_layer_$i, \
         max_epochs=10"
     done
 }
@@ -130,10 +130,10 @@ function sup_babi2_nofinetune_large() {
     for i in {0..23}
     do
         python -u /app/main.py --config_file /app/config/edgeprobe_bert_finetuned.conf -o \
-        "target_tasks=layers-sup-babi2, \
+        "target_tasks=layers-sup-babi-all, \
         bert_embedding_layer=$i, \
         bert_model_name=$BERT_TYPE, \
-        exp_name=bert_nofinetune_large_sup_babi2_layer_$i, \
+        exp_name=bert_nofinetune_large_sup_babi_all_layer_$i, \
         max_epochs=10"
     done
 }
@@ -158,13 +158,13 @@ function sup_babi_all_babi() {
     done
 }
 
-function sup_babi2_hotpot() {
+function sup_babi_all_hotpot() {
     BERT_TYPE="bert-large-uncased"
     MODEL_FILE="/data_dir/bert_models/hotpot_small_distract/pytorch_model.bin"
     EXP_NAME="hotpot"
     for i in {0..23}
     do
-       run_sup_babi2_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 0
+       run_sup_babi_all_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 0
     done
 }
 
@@ -306,6 +306,11 @@ then
 rel_nofinetune_base
 fi
 
+if [ $1 == 'sup_babi_all_babi' ]
+then
+sup_babi_all_babi
+fi
+
 ### to be done
 
 if [ $1 == 'qtype_nofinetune_base' ]
@@ -318,20 +323,20 @@ then
 qtype_nofinetune_large
 fi
 
-if [ $1 == 'sup_babi2_hotpot' ]
-then
-sup_babi2_hotpot
-fi
+# if [ $1 == 'sup_babi2_hotpot' ]
+# then
+# sup_babi2_hotpot
+# fi
 
-if [ $1 == 'sup_babi2_nofinetune_base' ]
-then
-sup_babi2_nofinetune_base
-fi
+# if [ $1 == 'sup_babi2_nofinetune_base' ]
+# then
+# sup_babi2_nofinetune_base
+# fi
 
-if [ $1 == 'sup_babi2_nofinetune_large' ]
-then
-sup_babi2_nofinetune_large
-fi
+# if [ $1 == 'sup_babi2_nofinetune_large' ]
+# then
+# sup_babi2_nofinetune_large
+# fi
 
 if [ $1 == 'ner_nofinetune_base' ]
 then
@@ -348,8 +353,18 @@ then
 ner_babi
 fi
 
-if [ $1 == 'sup_babi_all_babi' ]
+if [ $1 == 'sup_babi_all_hotpot' ]
 then
-sup_babi_all_babi
+sup_babi_all_hotpot
+fi
+
+if [ $1 == 'sup_babi_all_nofinetune_base' ]
+then
+sup_babi2_nofinetune_base
+fi
+
+if [ $1 == 'sup_babi_all_nofinetune_large' ]
+then
+sup_babi2_nofinetune_large
 fi
 
