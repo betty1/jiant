@@ -48,6 +48,18 @@ function run_qtype_task() {
     max_epochs=10"
 }
 
+function run_sup_babi2_task() {
+
+    python -u /app/main.py --config_file /app/config/edgeprobe_bert_finetuned.conf -o \
+    "target_tasks=layers-sup-babi2, \
+    bert_embedding_layer=$1, \
+    bert_model_name=$2, \
+    bert_model_file=$3, \
+    bert_classification=$5, \
+    exp_name=bert_$4_sup_babi2_layer_$1, \
+    max_epochs=10"
+}
+
 function qtype_babi_layers() {
     BERT_TYPE="bert-base-uncased"
     MODEL_FILE="/data_dir/bert_models/babi/qa21_base/pytorch_model.bin"
@@ -55,6 +67,16 @@ function qtype_babi_layers() {
     for i in {0..11}
     do
        run_qtype_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 1
+    done
+}
+
+function sup_babi2_babi() {
+    BERT_TYPE="bert-base-uncased"
+    MODEL_FILE="/data_dir/bert_models/babi/qa21_base/pytorch_model.bin"
+    EXP_NAME="babi"
+    for i in {0..11}
+    do
+       run_sup_babi2_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 1
     done
 }
 
@@ -208,5 +230,10 @@ fi
 if [ $1 == 'qtype_babi_layers' ]
 then
 qtype_babi_layers
+fi
+
+if [ $1 == 'sup_babi2_babi' ]
+then
+sup_babi2_babi
 fi
 
