@@ -260,6 +260,14 @@ register_task('layers-coref-ontonotes', rel_path='edges/ontonotes/coref',
                   'test': "test.json",
               }, is_symmetric=False)(EdgeProbingTask)
 
+# Question Types on TREC corpus. Fifty labels.
+register_task('layers-qtype-trec', rel_path='edges/qtype',
+              label_file="labels.txt", files_by_split={
+                  'train': "train.json",
+                  'val': "development.json",
+                  'test': "test.json",
+              }, is_symmetric=False)(EdgeProbingTask)
+
 ##
 # Core probing tasks. as featured in the paper.
 ##

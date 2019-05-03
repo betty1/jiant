@@ -23,6 +23,16 @@ class PretrainedBertForQuestionAnswering(pytorch_pretrained_bert.BertForQuestion
                          output_all_encoded_layers=True)
 
 
+class PretrainedBertForSequenceClassification(pytorch_pretrained_bert.BertForSequenceClassification):
+
+    def __init__(self, config, num_labels):
+        super(PretrainedBertForSequenceClassification, self).__init__(config, num_labels)
+
+    def forward(self, input_ids, token_type_ids=None, attention_mask=None, labels=None):
+        return self.bert(input_ids, token_type_ids, attention_mask,
+                         output_all_encoded_layers=True)
+
+
 def _get_seg_ids(ids, sep_id):
     """ Dynamically build the segment IDs for a concatenated pair of sentences
     Searches for index SEP_ID in the tensor
@@ -54,9 +64,15 @@ class BertEmbedderModule(nn.Module):
 
         if "bert_model_file" in args:
 
-            log.info("Loading fine-tuned BERT model from file.")
+            if "bert_classification" in args and args.bert_classification == 1:
 
-            self.model = PretrainedBertForQuestionAnswering.from_pretrained(args.bert_model_name)
+                log.info("Loading fine-tuned BERT Classfication model from file.")
+                self.model = PretrainedBertForSequenceClassification.from_pretrained(args.bert_model_name,
+                                                                                     num_labels=192)
+            else:
+
+                log.info("Loading fine-tuned BERT QA model from file.")
+                self.model = PretrainedBertForQuestionAnswering.from_pretrained(args.bert_model_name)
 
             self.model.load_state_dict(torch.load(args.bert_model_file))
 
@@ -65,8 +81,8 @@ class BertEmbedderModule(nn.Module):
             log.info("Loading pretrained BERT model without fine-tuning.")
 
             self.model = pytorch_pretrained_bert.BertModel.from_pretrained(
-                    args.bert_model_name,
-                    cache_dir=cache_dir)
+                args.bert_model_name,
+                cache_dir=cache_dir)
 
         self.embeddings_mode = args.bert_embeddings_mode
         self.embedding_layer = args.bert_embedding_layer
@@ -100,7 +116,7 @@ class BertEmbedderModule(nn.Module):
                                                    do_layer_norm=False)
 
     def forward(self, sent: Dict[str, torch.LongTensor],
-                unused_task_name: str="",
+                unused_task_name: str = "",
                 is_pair_task=False) -> torch.FloatTensor:
         """ Run BERT to get hidden states.
 

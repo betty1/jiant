@@ -1,16 +1,16 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: jiant-probing
+  name: jiant-probing-rel
 spec:
   template:
     metadata:
       labels:
-        app: jiant-probing
+        app: jiant-probing-rel
     spec:
       restartPolicy: "Never"
       containers:
-        - name: jiant-probing
+        - name: jiant-probing-rel
           image: registry.datexis.com/bvanaken/jiant-probing:v1.2
           imagePullPolicy: "Always"
           ports:
@@ -37,7 +37,7 @@ spec:
           - name: FASTTEXT_MODEL_FILE
             value: ""
           command: ["./start/start_probing.sh"]
-          args: ["coref_hotpot_layers"]
+          args: ["rel_nofinetune_layers"]
       nodeSelector:
         gpu: k80
       imagePullSecrets:

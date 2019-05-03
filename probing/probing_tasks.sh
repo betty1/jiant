@@ -7,6 +7,7 @@ function run_ner_task() {
     bert_embedding_layer=$1, \
     bert_model_name=$2, \
     bert_model_file=$3, \
+    bert_classification=$5, \
     exp_name=bert_$4_ner_layer_$1, \
     max_epochs=10"
 }
@@ -18,6 +19,7 @@ function run_coref_task() {
     bert_embedding_layer=$1, \
     bert_model_name=$2, \
     bert_model_file=$3, \
+    bert_classification=$5, \
     exp_name=bert_$4_coref_layer_$1, \
     max_epochs=10"
 }
@@ -29,8 +31,31 @@ function run_rel_semeval_task() {
     bert_embedding_layer=$1, \
     bert_model_name=$2, \
     bert_model_file=$3, \
+    bert_classification=$5, \
     exp_name=bert_$4_rel_layer_$1, \
     max_epochs=10"
+}
+
+function run_qtype_task() {
+
+    python -u /app/main.py --config_file /app/config/edgeprobe_bert_finetuned.conf -o \
+    "target_tasks=layers-qtype-trec, \
+    bert_embedding_layer=$1, \
+    bert_model_name=$2, \
+    bert_model_file=$3, \
+    bert_classification=$5, \
+    exp_name=bert_$4_qtype_layer_$1, \
+    max_epochs=10"
+}
+
+function qtype_babi_layers() {
+    BERT_TYPE="bert-base-uncased"
+    MODEL_FILE="/data_dir/bert_models/babi/qa21_base/pytorch_model.bin"
+    EXP_NAME="babi"
+    for i in {0..11}
+    do
+       run_ner_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 1
+    done
 }
 
 function ner_babi_layers() {
@@ -39,7 +64,7 @@ function ner_babi_layers() {
     EXP_NAME="babi"
     for i in {0..11}
     do
-       run_ner_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME
+       run_ner_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 1
     done
 }
 
@@ -49,7 +74,7 @@ function coref_babi_layers() {
     EXP_NAME="babi"
     for i in {0..11}
     do
-       run_coref_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME
+       run_coref_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 1
     done
 }
 
@@ -59,7 +84,7 @@ function rel_babi_layers() {
     EXP_NAME="babi"
     for i in {0..11}
     do
-       run_rel_semeval_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME
+       run_rel_semeval_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 1
     done
 }
 
@@ -69,7 +94,7 @@ function ner_hotpot_layers() {
     EXP_NAME="hotpot"
     for i in {0..23}
     do
-       run_ner_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME
+       run_ner_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 0
     done
 }
 
@@ -79,7 +104,7 @@ function coref_hotpot_layers() {
     EXP_NAME="hotpot"
     for i in {0..23}
     do
-       run_coref_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME
+       run_coref_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 0
     done
 }
 
@@ -89,7 +114,7 @@ function rel_hotpot_layers() {
     EXP_NAME="hotpot"
     for i in {0..23}
     do
-       run_rel_semeval_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME
+       run_rel_semeval_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 0
     done
 }
 
@@ -178,5 +203,10 @@ fi
 if [ $1 == 'rel_nofinetune_layers' ]
 then
 rel_nofinetune_layers
+fi
+
+if [ $1 == 'qtype_babi_layers' ]
+then
+qtype_babi_layers
 fi
 
