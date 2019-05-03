@@ -54,7 +54,7 @@ function qtype_babi_layers() {
     EXP_NAME="babi"
     for i in {0..11}
     do
-       run_ner_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 1
+       run_qtype_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 1
     done
 }
 

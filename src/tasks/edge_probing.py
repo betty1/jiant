@@ -266,7 +266,7 @@ register_task('layers-qtype-trec', rel_path='edges/qtype',
                   'train': "train.json",
                   'val': "development.json",
                   'test': "test.json",
-              }, is_symmetric=False)(EdgeProbingTask)
+              }, single_sided=True)(EdgeProbingTask)
 
 ##
 # Core probing tasks. as featured in the paper.
