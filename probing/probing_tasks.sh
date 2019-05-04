@@ -60,15 +60,15 @@ function run_sup_babi2_task() {
     max_epochs=10"
 }
 
-function run_sup_babi_all_task() {
+function run_sup_babi_s_task() {
 
     python -u /app/main.py --config_file /app/config/edgeprobe_bert_finetuned.conf -o \
-    "target_tasks=layers-sup-babi-all, \
+    "target_tasks=layers-sup-babi-s, \
     bert_embedding_layer=$1, \
     bert_model_name=$2, \
     bert_model_file=$3, \
     bert_classification=$5, \
-    exp_name=bert_$4_sup_babi_all_layer_$1, \
+    exp_name=bert_$4_sup_babi_s_layer_$1, \
     max_epochs=10"
 }
 
@@ -110,61 +110,51 @@ function qtype_nofinetune_large() {
     done
 }
 
-function sup_babi_all_nofinetune_base() {
+function sup_babi_s_nofinetune_base() {
     BERT_TYPE="bert-base-uncased"
 
     for i in {0..11}
     do
         python -u /app/main.py --config_file /app/config/edgeprobe_bert_finetuned.conf -o \
-        "target_tasks=layers-sup-babi-all, \
+        "target_tasks=layers-sup-babi-s, \
         bert_embedding_layer=$i, \
         bert_model_name=$BERT_TYPE, \
-        exp_name=bert_nofinetune_sup_babi_all_layer_$i, \
+        exp_name=bert_nofinetune_sup_babi_s_layer_$i, \
         max_epochs=10"
     done
 }
 
-function sup_babi2_nofinetune_large() {
+function sup_babi_s_nofinetune_large() {
     BERT_TYPE="bert-large-uncased"
 
     for i in {0..23}
     do
         python -u /app/main.py --config_file /app/config/edgeprobe_bert_finetuned.conf -o \
-        "target_tasks=layers-sup-babi-all, \
+        "target_tasks=layers-sup-babi-s, \
         bert_embedding_layer=$i, \
         bert_model_name=$BERT_TYPE, \
-        exp_name=bert_nofinetune_large_sup_babi_all_layer_$i, \
+        exp_name=bert_nofinetune_large_sup_babi_s_layer_$i, \
         max_epochs=10"
     done
 }
 
-function sup_babi2_babi() {
+function sup_babi_s_babi() {
     BERT_TYPE="bert-base-uncased"
     MODEL_FILE="/data_dir/bert_models/babi/qa21_base/pytorch_model.bin"
     EXP_NAME="babi"
     for i in {0..11}
     do
-       run_sup_babi2_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 1
+       run_sup_babi_s_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 1
     done
 }
 
-function sup_babi_all_babi() {
-    BERT_TYPE="bert-base-uncased"
-    MODEL_FILE="/data_dir/bert_models/babi/qa21_base/pytorch_model.bin"
-    EXP_NAME="babi"
-    for i in {0..11}
-    do
-       run_sup_babi_all_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 1
-    done
-}
-
-function sup_babi_all_hotpot() {
+function sup_babi_s_hotpot() {
     BERT_TYPE="bert-large-uncased"
     MODEL_FILE="/data_dir/bert_models/hotpot_small_distract/pytorch_model.bin"
     EXP_NAME="hotpot"
     for i in {0..23}
     do
-       run_sup_babi_all_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 0
+       run_sup_babi_s_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 0
     done
 }
 
@@ -311,7 +301,10 @@ then
 sup_babi_all_babi
 fi
 
-### to be done
+if [ $1 == 'sup_babi_all_hotpot' ]
+then
+sup_babi_all_hotpot
+fi
 
 if [ $1 == 'qtype_nofinetune_base' ]
 then
@@ -322,6 +315,18 @@ if [ $1 == 'qtype_nofinetune_large' ]
 then
 qtype_nofinetune_large
 fi
+
+if [ $1 == 'ner_nofinetune_base' ]
+then
+ner_nofinetune_base
+fi
+
+if [ $1 == 'ner_babi' ]
+then
+ner_babi
+fi
+
+### to be done
 
 # if [ $1 == 'sup_babi2_hotpot' ]
 # then
@@ -338,9 +343,24 @@ fi
 # sup_babi2_nofinetune_large
 # fi
 
-if [ $1 == 'ner_nofinetune_base' ]
+if [ $1 == 'sup_babi_s_hotpot' ]
 then
-ner_nofinetune_base
+sup_babi_s_hotpot
+fi
+
+if [ $1 == 'sup_babi_s_babi' ]
+then
+sup_babi_s_babi
+fi
+
+if [ $1 == 'sup_babi_s_nofinetune_base' ]
+then
+sup_babi_s_nofinetune_base
+fi
+
+if [ $1 == 'sup_babi_s_nofinetune_large' ]
+then
+sup_babi_s_nofinetune_large
 fi
 
 if [ $1 == 'coref_nofinetune_base' ]
@@ -348,23 +368,13 @@ then
 coref_nofinetune_base
 fi
 
-if [ $1 == 'ner_babi' ]
-then
-ner_babi
-fi
+# if [ $1 == 'sup_babi_all_nofinetune_base' ]
+# then
+# sup_babi_all_nofinetune_base
+# fi
 
-if [ $1 == 'sup_babi_all_hotpot' ]
-then
-sup_babi_all_hotpot
-fi
-
-if [ $1 == 'sup_babi_all_nofinetune_base' ]
-then
-sup_babi2_nofinetune_base
-fi
-
-if [ $1 == 'sup_babi_all_nofinetune_large' ]
-then
-sup_babi2_nofinetune_large
-fi
+# if [ $1 == 'sup_babi_all_nofinetune_large' ]
+# then
+# sup_babi_all_nofinetune_large
+# fi
 
