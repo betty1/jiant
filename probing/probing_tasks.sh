@@ -168,6 +168,56 @@ function ner_babi() {
     done
 }
 
+function ner_squad() {
+    BERT_TYPE="bert-base-uncased"
+    MODEL_FILE="/data_dir/bert_models/squad/pytorch_model.bin"
+    EXP_NAME="squad"
+    for i in {0..11}
+    do
+       run_ner_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 0
+    done
+}
+
+function coref_squad() {
+    BERT_TYPE="bert-base-uncased"
+    MODEL_FILE="/data_dir/bert_models/squad/pytorch_model.bin"
+    EXP_NAME="squad"
+    for i in {0..11}
+    do
+       run_coref_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 0
+    done
+}
+
+function rel_squad() {
+    BERT_TYPE="bert-base-uncased"
+    MODEL_FILE="/data_dir/bert_models/squad/pytorch_model.bin"
+    EXP_NAME="squad"
+    for i in {0..11}
+    do
+       run_rel_semeval_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 0
+    done
+}
+
+function qtype_squad() {
+    BERT_TYPE="bert-base-uncased"
+    MODEL_FILE="/data_dir/bert_models/squad/pytorch_model.bin"
+    EXP_NAME="squad"
+    for i in {0..11}
+    do
+       run_qtype_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 0
+    done
+}
+
+function sup_babi_s_squad() {
+    BERT_TYPE="bert-base-uncased"
+    MODEL_FILE="/data_dir/bert_models/squad/pytorch_model.bin"
+    EXP_NAME="squad"
+    for i in {0..11}
+    do
+       run_sup_babi_s_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 0
+    done
+}
+
 function coref_babi_layers() {
     BERT_TYPE="bert-base-uncased"
     MODEL_FILE="/data_dir/bert_models/babi/qa21_base/pytorch_model.bin"
@@ -182,10 +232,13 @@ function rel_babi_layers() {
     BERT_TYPE="bert-base-uncased"
     MODEL_FILE="/data_dir/bert_models/babi/qa21_base/pytorch_model.bin"
     EXP_NAME="babi"
-    for i in {0..11}
-    do
-       run_rel_semeval_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 1
-    done
+
+    run_rel_semeval_task 5 $BERT_TYPE $MODEL_FILE $EXP_NAME 1
+
+    # for i in {0..11}
+    # do
+    #    run_rel_semeval_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 1
+    # done
 }
 
 function ner_nofinetune_large() {
@@ -258,13 +311,7 @@ function coref_nofinetune_base() {
     done
 }
 
-### check layer 5:
-if [ $1 == 'rel_babi_layers' ]
-then
-rel_babi_layers
-fi
-
-### running:
+### done:
 
 if [ $1 == 'coref_babi_layers' ]
 then
@@ -326,31 +373,9 @@ then
 ner_babi
 fi
 
-### to be done
-
-# if [ $1 == 'sup_babi2_hotpot' ]
-# then
-# sup_babi2_hotpot
-# fi
-
-# if [ $1 == 'sup_babi2_nofinetune_base' ]
-# then
-# sup_babi2_nofinetune_base
-# fi
-
-# if [ $1 == 'sup_babi2_nofinetune_large' ]
-# then
-# sup_babi2_nofinetune_large
-# fi
-
 if [ $1 == 'sup_babi_s_hotpot' ]
 then
 sup_babi_s_hotpot
-fi
-
-if [ $1 == 'sup_babi_s_babi' ]
-then
-sup_babi_s_babi
 fi
 
 if [ $1 == 'sup_babi_s_nofinetune_base' ]
@@ -358,23 +383,53 @@ then
 sup_babi_s_nofinetune_base
 fi
 
-if [ $1 == 'sup_babi_s_nofinetune_large' ]
-then
-sup_babi_s_nofinetune_large
-fi
-
 if [ $1 == 'coref_nofinetune_base' ]
 then
 coref_nofinetune_base
 fi
 
-# if [ $1 == 'sup_babi_all_nofinetune_base' ]
-# then
-# sup_babi_all_nofinetune_base
-# fi
+if [ $1 == 'sup_babi_s_babi' ]
+then
+sup_babi_s_babi
+fi
 
-# if [ $1 == 'sup_babi_all_nofinetune_large' ]
-# then
-# sup_babi_all_nofinetune_large
-# fi
+if [ $1 == 'sup_babi_s_nofinetune_large' ]
+then
+sup_babi_s_nofinetune_large
+fi
+
+### to do
+
+### check layer 5:
+if [ $1 == 'rel_babi_layers' ]
+then
+rel_babi_layers
+fi
+
+### squad
+
+if [ $1 == 'ner_squad' ]
+then
+ner_squad
+fi
+
+if [ $1 == 'coref_squad' ]
+then
+coref_squad
+fi
+
+if [ $1 == 'rel_squad' ]
+then
+rel_squad
+fi
+
+if [ $1 == 'qtype_squad' ]
+then
+qtype_squad
+fi
+
+if [ $1 == 'sup_babi_s_squad' ]
+then
+sup_babi_s_squad
+fi
 
