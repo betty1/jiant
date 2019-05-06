@@ -293,6 +293,15 @@ register_task('layers-sup-babi-s', rel_path='edges/sup_babi_s',
                   'test': "test.json",
               }, is_symmetric=False)(EdgeProbingTask)
 
+
+# Question-Supporting Fact-Match on all babi tasks s
+register_task('layers-sup-hotpot', rel_path='edges/sup_hotpot',
+              label_file="labels.txt", files_by_split={
+                  'train': "train.json",
+                  'val': "development.json",
+                  'test': "test.json",
+              }, is_symmetric=False)(EdgeProbingTask)
+
 ##
 # Core probing tasks. as featured in the paper.
 ##

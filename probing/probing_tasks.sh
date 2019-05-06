@@ -72,6 +72,18 @@ function run_sup_babi_s_task() {
     max_epochs=10"
 }
 
+function run_sup_hotpot_task() {
+
+    python -u /app/main.py --config_file /app/config/edgeprobe_bert_finetuned.conf -o \
+    "target_tasks=layers-sup-hotpot, \
+    bert_embedding_layer=$1, \
+    bert_model_name=$2, \
+    bert_model_file=$3, \
+    bert_classification=$5, \
+    exp_name=bert_$4_sup_hotpot_layer_$1, \
+    max_epochs=10"
+}
+
 function qtype_hotpot() {
     BERT_TYPE="bert-large-uncased"
     MODEL_FILE="/data_dir/bert_models/hotpot_small_distract/pytorch_model.bin"
@@ -138,6 +150,20 @@ function sup_babi_s_nofinetune_large() {
     done
 }
 
+function sup_hotpot_nofinetune_large() {
+    BERT_TYPE="bert-large-uncased"
+
+    for i in {0..23}
+    do
+        python -u /app/main.py --config_file /app/config/edgeprobe_bert_finetuned.conf -o \
+        "target_tasks=layers-sup-hotpot, \
+        bert_embedding_layer=$i, \
+        bert_model_name=$BERT_TYPE, \
+        exp_name=bert_nofinetune_large_sup_hotpot_layer_$i, \
+        max_epochs=10"
+    done
+}
+
 function sup_babi_s_babi() {
     BERT_TYPE="bert-base-uncased"
     MODEL_FILE="/data_dir/bert_models/babi/qa21_base/pytorch_model.bin"
@@ -155,6 +181,16 @@ function sup_babi_s_hotpot() {
     for i in {0..23}
     do
        run_sup_babi_s_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 0
+    done
+}
+
+function sup_hotpot_hotpot() {
+    BERT_TYPE="bert-large-uncased"
+    MODEL_FILE="/data_dir/bert_models/hotpot_small_distract/pytorch_model.bin"
+    EXP_NAME="hotpot"
+    for i in {0..23}
+    do
+       run_sup_hotpot_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 0
     done
 }
 
@@ -233,12 +269,10 @@ function rel_babi_layers() {
     MODEL_FILE="/data_dir/bert_models/babi/qa21_base/pytorch_model.bin"
     EXP_NAME="babi"
 
-    run_rel_semeval_task 5 $BERT_TYPE $MODEL_FILE $EXP_NAME 1
-
-    # for i in {0..11}
-    # do
-    #    run_rel_semeval_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 1
-    # done
+    for i in {0..11}
+    do
+       run_rel_semeval_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 1
+    done
 }
 
 function ner_nofinetune_large() {
@@ -398,34 +432,14 @@ then
 sup_babi_s_nofinetune_large
 fi
 
-### to do
-
-### check layer 5:
-if [ $1 == 'rel_babi_layers' ]
-then
-rel_babi_layers
-fi
-
-### squad
-
-if [ $1 == 'ner_squad' ]
-then
-ner_squad
-fi
-
-if [ $1 == 'coref_squad' ]
-then
-coref_squad
-fi
-
 if [ $1 == 'rel_squad' ]
 then
 rel_squad
 fi
 
-if [ $1 == 'qtype_squad' ]
+if [ $1 == 'rel_babi_layers' ]
 then
-qtype_squad
+rel_babi_layers
 fi
 
 if [ $1 == 'sup_babi_s_squad' ]
@@ -433,3 +447,27 @@ then
 sup_babi_s_squad
 fi
 
+if [ $1 == 'qtype_squad' ]
+then
+qtype_squad
+fi
+
+if [ $1 == 'coref_squad' ]
+then
+coref_squad
+fi
+
+if [ $1 == 'ner_squad' ]
+then
+ner_squad
+fi
+
+if [ $1 == 'sup_hotpot_hotpot' ]
+then
+sup_hotpot_hotpot
+fi
+
+if [ $1 == 'sup_hotpot_nofinetune_large' ]
+then
+sup_hotpot_nofinetune_large
+fi
