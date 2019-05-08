@@ -268,6 +268,13 @@ register_task('layers-qtype-trec', rel_path='edges/qtype',
                   'test': "test.json",
               }, single_sided=True)(EdgeProbingTask)
 
+register_task('layers-answer-hotpot', rel_path='edges/answer_hotpot',
+              label_file="labels.txt", files_by_split={
+                  'train': "train.json",
+                  'val': "development.json",
+                  'test': "test.json",
+              }, single_sided=True)(EdgeProbingTask)
+
 # Question-Supporting Fact-Match on babi qa2
 register_task('layers-sup-babi2', rel_path='edges/sup_babi2',
               label_file="labels.txt", files_by_split={

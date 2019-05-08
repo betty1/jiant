@@ -84,6 +84,18 @@ function run_sup_hotpot_task() {
     max_epochs=10"
 }
 
+function run_answer_hotpot_task() {
+
+    python -u /app/main.py --config_file /app/config/edgeprobe_bert_finetuned.conf -o \
+    "target_tasks=layers-answer-hotpot, \
+    bert_embedding_layer=$1, \
+    bert_model_name=$2, \
+    bert_model_file=$3, \
+    bert_classification=$5, \
+    exp_name=bert_$4_answer_hotpot_layer_$1, \
+    max_epochs=10"
+}
+
 function qtype_hotpot() {
     BERT_TYPE="bert-large-uncased"
     MODEL_FILE="/data_dir/bert_models/hotpot_small_distract/pytorch_model.bin"
@@ -91,6 +103,16 @@ function qtype_hotpot() {
     for i in {0..23}
     do
        run_qtype_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 0
+    done
+}
+
+function answer_hotpot() {
+    BERT_TYPE="bert-large-uncased"
+    MODEL_FILE="/data_dir/bert_models/hotpot_small_distract/pytorch_model.bin"
+    EXP_NAME="hotpot"
+    for i in {0..23}
+    do
+       run_answer_hotpot_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 0
     done
 }
 
@@ -160,6 +182,20 @@ function sup_hotpot_nofinetune_large() {
         bert_embedding_layer=$i, \
         bert_model_name=$BERT_TYPE, \
         exp_name=bert_nofinetune_large_sup_hotpot_layer_$i, \
+        max_epochs=10"
+    done
+}
+
+function answer_hotpot_nofinetune_large() {
+    BERT_TYPE="bert-large-uncased"
+
+    for i in {0..23}
+    do
+        python -u /app/main.py --config_file /app/config/edgeprobe_bert_finetuned.conf -o \
+        "target_tasks=layers-answer-hotpot, \
+        bert_embedding_layer=$i, \
+        bert_model_name=$BERT_TYPE, \
+        exp_name=bert_nofinetune_large_answer_hotpot_layer_$i, \
         max_epochs=10"
     done
 }
@@ -470,4 +506,14 @@ fi
 if [ $1 == 'sup_hotpot_nofinetune_large' ]
 then
 sup_hotpot_nofinetune_large
+fi
+
+if [ $1 == 'answer_hotpot_nofinetune_large' ]
+then
+answer_hotpot_nofinetune_large
+fi
+
+if [ $1 == 'answer_hotpot' ]
+then
+answer_hotpot
 fi
