@@ -175,7 +175,7 @@ function sup_babi_s_nofinetune_large() {
 function sup_hotpot_nofinetune_large() {
     BERT_TYPE="bert-large-uncased"
 
-    for i in {0..23}
+    for i in {13..23}
     do
         python -u /app/main.py --config_file /app/config/edgeprobe_bert_finetuned.conf -o \
         "target_tasks=layers-sup-hotpot, \
@@ -224,7 +224,7 @@ function sup_hotpot_hotpot() {
     BERT_TYPE="bert-large-uncased"
     MODEL_FILE="/data_dir/bert_models/hotpot_small_distract/pytorch_model.bin"
     EXP_NAME="hotpot"
-    for i in {0..23}
+    for i in {12..23}
     do
        run_sup_hotpot_task $i $BERT_TYPE $MODEL_FILE $EXP_NAME 0
     done
