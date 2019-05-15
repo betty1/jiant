@@ -170,6 +170,20 @@ function sup_babi_s_nofinetune_base() {
     done
 }
 
+function sup_squad_nofinetune_base() {
+    BERT_TYPE="bert-base-uncased"
+
+    for i in {0..11}
+    do
+        python -u /app/main.py --config_file /app/config/edgeprobe_bert_finetuned.conf -o \
+        "target_tasks=layers-sup-squad, \
+        bert_embedding_layer=$i, \
+        bert_model_name=$BERT_TYPE, \
+        exp_name=bert_nofinetune_sup_squad_layer_$i, \
+        max_epochs=10"
+    done
+}
+
 function sup_babi_s_nofinetune_large() {
     BERT_TYPE="bert-large-uncased"
 
